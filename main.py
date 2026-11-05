@@ -11,6 +11,35 @@ def view_inventory():
     for item, info in inventory.items():
         print(f"{item:<10}${info['price']:>7.2f}${info['cost']:>7.2f}"
               f"{info['quantity']:>6}{info['reorder']:>9}")
+
+# Asks for a whole number greater than 0; returns None if the input is invalid
+def get_positive_int(prompt):
+    text = input(prompt).strip()
+    if text.isdigit() and int(text) > 0:
+        return int(text)
+    print("Please enter a whole number greater than 0 (no letters).")
+    return None
+
+# Restocks an existing item, or asks for details and adds a new item
+def add_or_update_item():
+    item = input("Item name: ").strip().lower()
+
+    try:
+        if item in inventory:
+            amount = int(input("How many to add? "))
+            inventory[item]["quantity"] += amount
+            print("Restocked.", item, "now has", inventory[item]["quantity"])
+        else:
+            print("New item! Enter its details.")
+            price = float(input("Menu price: $"))
+            cost = float(input("Cost to make: $"))
+            quantity = int(input("Starting quantity: "))
+            reorder = int(input("Reorder level: "))
+            inventory[item] = {"price": price, "cost": cost,
+                               "quantity": quantity, "reorder": reorder}
+            print("Added", item)
+    except ValueError:
+        print("Please enter numbers only. Nothing was changed.")
         
 # Prints all menu options for Grizzly Tap
 def show_menu():
@@ -33,10 +62,12 @@ def main():
 
         if choice == "1":
             view_inventory()
+        elif choice == "3":
+            add_or_update_item()
         elif choice == "7":
             print("Thank you for visiting Grizzly Tap!")
             running = False
-        elif choice in ["1", "2", "3", "4", "5", "6"]:
+        elif choice in ["2", "4", "5", "6"]:
             print("Coming soon")
         else:
             print("Invalid option. Please enter a number from 1 to 7.")
