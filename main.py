@@ -1,16 +1,41 @@
+import csv
+
+inventory_file = "inventory.csv" #new way to view inventory
+SALES_FILE = "sales.csv" #new way to view sales
+
+inventory = {}
+sales = []
+
 # Main data: each menu item with its price, cost, quantity on hand, and reorder level
-inventory = {
-    "wings": {"price": 12.50, "cost": 5.00, "quantity": 100, "reorder": 30},
-    "nachos": {"price": 9.00, "cost": 3.00, "quantity": 55, "reorder": 15},
-    "burgers": {"price": 14.00, "cost": 6.00, "quantity": 40, "reorder": 10},
-    "soda": {"price": 3.00, "cost": 0.75, "quantity": 80, "reorder": 20}
-}
+inventory = {} #load invetory function will fill this with csv data
+
+#loads the inventory from the csv file into the inventory dictionary changes text to int or float
+def load_inventory():
+    with open (inventory_file, "r") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            inventory[row["item"]] = {
+                    "price": float(row["price"]),
+                    "cost": float(row["cost"]),
+                    "quantity": int(row["quantity"]),
+                    "reorder": int(row["reorder"])}
+
+#loads inventory dictionary from the csv file      
+def save_inventory():
+    with open(inventory_file, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["item", "price", "cost", "quantity", "reorder"])
+        for item, info in inventory.items():
+            writer.writerow([item, info["price"], info["cost"],
+                             info["quantity"], info["reorder"]])
+            
 # Adds inventory option to menu
 def view_inventory():
     print(f"\n{'Item':<10}{'Price':>8}{'Cost':>8}{'Qty':>6}{'Reorder':>9}")
     for item, info in inventory.items():
         print(f"{item:<10}${info['price']:>7.2f}${info['cost']:>7.2f}"
               f"{info['quantity']:>6}{info['reorder']:>9}")
+
 
 # Asks for a whole number greater than 0; returns None if the input is invalid
 def get_positive_int(prompt):
@@ -24,22 +49,6 @@ def get_positive_int(prompt):
 def add_or_update_item():
     item = input("Item name: ").strip().lower()
 
-    try:
-        if item in inventory:
-            amount = int(input("How many to add? "))
-            inventory[item]["quantity"] += amount
-            print("Restocked.", item, "now has", inventory[item]["quantity"])
-        else:
-            print("New item! Enter its details.")
-            price = float(input("Menu price: $"))
-            cost = float(input("Cost to make: $"))
-            quantity = int(input("Starting quantity: "))
-            reorder = int(input("Reorder level: "))
-            inventory[item] = {"price": price, "cost": cost,
-                               "quantity": quantity, "reorder": reorder}
-            print("Added", item)
-    except ValueError:
-        print("Please enter numbers only. Nothing was changed.")
         
 # Prints all menu options for Grizzly Tap
 def show_menu():
