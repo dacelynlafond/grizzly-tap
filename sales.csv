@@ -1,11 +1,12 @@
-date,item,quantity,total
-2026-10-03,wings,2,25.00
-2026-10-04,nachos,1,9.00
-2026-10-04,draft beer,4,26.00
-2026-10-05,burgers,2,28.00
-2026-10-05,fries,2,12.00
-2026-10-06,soda,3,9.00
-2026-10-07,pitcher,1,18.00
-2026-10-08,chicken sandwich,2,26.00
-2026-10-09,mozzarella sticks,3,25.50
-2026-10-10,pretzels,2,15.00
+date,item,quantity,total,game_day
+2026-11-07,wings,6,75.0,no
+2026-11-07,beer,10,60.0,no
+2026-11-08,burger,4,44.0,no
+2026-11-10,nachos,5,45.0,no
+2026-11-12,fries,8,44.0,no
+2026-11-14,wings,25,312.5,yes
+2026-11-14,beer,40,240.0,yes
+2026-11-14,nachos,15,135.0,yes
+2026-11-14,sliders,12,126.0,yes
+2026-11-15,pizza,9,126.0,yes
+2026-01-01,pretzels,2,15.0,yes

@@ -1,11 +1,11 @@
 item,price,cost,quantity,reorder
-wings,12.50,5.00,100,30
-nachos,9.00,3.00,55,15
-burgers,14.00,6.00,40,10
-soda,3.00,0.75,80,20
-fries,6.00,1.50,90,25
-pretzels,7.50,2.25,45,12
-chicken sandwich,13.00,5.50,35,10
-draft beer,6.50,2.00,120,40
-pitcher,18.00,6.50,30,8
-mozzarella sticks,8.50,2.75,50,15
+wings,12.5,5.0,100,30
+nachos,9.0,3.0,55,15
+burgers,14.0,6.0,40,10
+soda,3.0,0.75,80,20
+fries,6.0,1.5,90,25
+pretzels,7.5,2.25,48,12
+chicken sandwich,13.0,5.5,35,10
+draft beer,6.5,2.0,120,40
+pitcher,18.0,6.5,30,8
+mozzarella sticks,8.5,2.75,50,15

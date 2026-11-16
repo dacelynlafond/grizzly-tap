@@ -3,7 +3,6 @@ import csv
 inventory_file = "inventory.csv" #new way to view inventory
 SALES_FILE = "sales.csv" #new way to view sales
 
-inventory = {}
 sales = []
 
 # Main data: each menu item with its price, cost, quantity on hand, and reorder level
@@ -59,11 +58,11 @@ def save_sales():
             
 # Asks for a whole number greater than 0; returns None if the input is invalid
 def get_positive_int(prompt):
-    text = input(prompt).strip()
-    if text.isdigit() and int(text) > 0:
-        return int(text)
-    print("Please enter a whole number greater than 0 (no letters).")
-    return None
+    while True:
+        text = input(prompt).strip()
+        if text.isdigit() and int(text) > 0:
+            return int(text)
+        print("Please enter a whole number greater than 0 (no letters).")
 
 # Keeps asking until the user enters a number (like 12.50) greater than 0
 def get_positive_float(prompt):
@@ -105,8 +104,7 @@ def record_order():
         return
 
     quantity = get_positive_int("Quantity ordered: ")
-    if quantity is None:
-        return
+
     if quantity > inventory[item]["quantity"]:
         print("Not enough in stock. Only", inventory[item]["quantity"], "left.")
         return
@@ -132,11 +130,12 @@ def show_menu():
     print("4. Show Low Stock Alerts")
     print("5. Weekly Sales Report")
     print("6. Run 30-day Simulation")
-    print("7. Exit")
-
+    print("7. Save and Exit")
 
 # Runs the main loop until the user chooses Exit
 def main():
+    load_inventory()
+    load_sales()
     running = True
     while running:
         show_menu()
@@ -144,15 +143,18 @@ def main():
 
         if choice == "1":
             view_inventory()
+        elif choice == "2":
+            record_order()
         elif choice == "3":
             add_or_update_item()
         elif choice == "7":
-            print("Thank you for visiting Grizzly Tap!")
+            save_inventory()
+            save_sales()
+            print("Saved. Thank you for visiting Grizzly Tap!")
             running = False
-        elif choice in ["2", "4", "5", "6"]:
+        elif choice in ["4", "5", "6"]:
             print("Coming soon")
         else:
             print("Invalid option. Please enter a number from 1 to 7.")
-
 
 main()
