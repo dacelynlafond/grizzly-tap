@@ -120,7 +120,69 @@ def record_order():
                   "total": total, "game_day": game_day})
     print(f"Order recorded: {quantity} {item} = ${total:.2f}")
 
-        
+# Adds up the quantity sold for each item and returns a dictionary
+def units_by_item(sales_list):
+    totals = {}
+    for sale in sales_list:
+        item = sale["item"]
+        if item in totals:
+            totals[item] += sale["quantity"]
+        else:
+            totals[item] = sale["quantity"]
+    return totals
+
+# Adds up the revenue for each date and returns a dictionary
+def revenue_by_day(sales_list):
+    totals = {}
+    for sale in sales_list:
+        date = sale["date"]
+        if date in totals:
+            totals[date] += sale["total"]
+        else:
+            totals[date] = sale["total"]
+    return totals
+
+# Prints a summary of all recorded sales
+def show_sales_report(sales_list):
+    if len(sales_list) == 0:
+        print("No sales recorded yet. Record some orders first.")
+        return
+
+    # Total revenue, game day revenue, and normal day revenue
+    total_revenue = 0
+    game_revenue = 0
+    normal_revenue = 0
+    for sale in sales_list:
+        total_revenue += sale["total"]
+        if sale["game_day"] == "yes":
+            game_revenue += sale["total"]
+        else:
+            normal_revenue += sale["total"]
+
+    order_count = len(sales_list)
+    average_order = total_revenue / order_count
+
+    # Find the top seller
+    units = units_by_item(sales_list)
+    top_item = ""
+    top_units = 0
+    for item in units:
+        if units[item] > top_units:
+            top_item = item
+            top_units = units[item]
+
+    print("\n--- Grizzly Tap Sales Report ---")
+    print(f"Orders recorded:   {order_count}")
+    print(f"Total revenue:     ${total_revenue:.2f}")
+    print(f"Average per order: ${average_order:.2f}")
+    print(f"Top seller:        {top_item} ({top_units} sold)")
+    print(f"Game day revenue:  ${game_revenue:.2f}")
+    print(f"Normal day revenue: ${normal_revenue:.2f}")
+
+    print("\nUnits sold by item:")
+    for item in units:
+        print(f"   {item}: {units[item]}")
+
 # Prints all menu options for Grizzly Tap
 def show_menu():
     print("\n==== Grizzly Tap Menu ====")
@@ -128,7 +190,7 @@ def show_menu():
     print("2. Record Customer Order")
     print("3. Add/Restock Item")
     print("4. Show Low Stock Alerts")
-    print("5. Weekly Sales Report")
+    print("5. Sales Report")
     print("6. Run 30-day Simulation")
     print("7. Save and Exit")
 
@@ -152,8 +214,10 @@ def main():
             save_sales()
             print("Saved. Thank you for visiting Grizzly Tap!")
             running = False
-        elif choice in ["4", "5", "6"]:
+        elif choice in ["4", "6"]:
             print("Coming soon")
+        elif choice == "5":
+            show_sales_report(sales)
         else:
             print("Invalid option. Please enter a number from 1 to 7.")
 
