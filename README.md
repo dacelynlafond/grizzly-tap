@@ -24,12 +24,14 @@ How much food and staff do we need on a game day compared to a normal night?
 8. Save and Exit
 
 ## Files
-- `main.py` - runs the menu
+- `main.py` - menu loop; run this file
 - `inventory.csv` - menu items, prices, costs, stock, and reorder levels
 - `sales.csv` - customer orders that have been recorded
 - `employees.csv` - employee data
 - `units_by_item.png` - units sold by item chart
 -`revenue_by_day.png` - revenue by day chart
+- `bar.py` - loads, saves, views, and updates inventory; records orders
+- `reports.py` - sales report and charts
 
 ## Charts
 
