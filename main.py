@@ -1,4 +1,5 @@
 import csv
+import matplotlib.pyplot as plt
 
 inventory_file = "inventory.csv" #new way to view inventory
 SALES_FILE = "sales.csv" #new way to view sales
@@ -142,6 +143,43 @@ def revenue_by_day(sales_list):
             totals[date] = sale["total"]
     return totals
 
+def show_charts(sales_list):
+    if len(sales_list) == 0:
+        print("No sales recorded yet. Nothing to chart.")
+        return
+
+    # Chart 1: bar chart of units sold by item
+    units = units_by_item(sales_list)
+    item_names = list(units.keys())
+    item_units = list(units.values())
+
+    plt.bar(item_names, item_units)
+    plt.title("Units Sold by Item")
+    plt.xlabel("Item")
+    plt.ylabel("Units Sold")
+    plt.savefig("units_by_item.png")
+    plt.show()
+    plt.close()
+
+    # Chart 2: line chart of revenue by day
+    daily = revenue_by_day(sales_list)
+    dates = sorted(daily.keys())
+    daily_revenue = []
+    for date in dates:
+        daily_revenue.append(daily[date])
+
+    plt.plot(dates, daily_revenue, marker="o")
+    plt.title("Revenue by Day")
+    plt.xlabel("Date")
+    plt.ylabel("Revenue ($)")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig("revenue_by_day.png")
+    plt.show()
+    plt.close()
+
+    print("Charts saved: units_by_item.png and revenue_by_day.png")
+
 # Prints a summary of all recorded sales
 def show_sales_report(sales_list):
     if len(sales_list) == 0:
@@ -192,7 +230,8 @@ def show_menu():
     print("4. Show Low Stock Alerts")
     print("5. Sales Report")
     print("6. Run 30-day Simulation")
-    print("7. Save and Exit")
+    print("7. Show Charts")
+    print("8. Save and Exit")
 
 # Runs the main loop until the user chooses Exit
 def main():
@@ -201,7 +240,7 @@ def main():
     running = True
     while running:
         show_menu()
-        choice = input("Choose an option (1-7): ").strip()
+        choice = input("Choose an option (1-8): ").strip()
 
         if choice == "1":
             view_inventory()
@@ -209,16 +248,18 @@ def main():
             record_order()
         elif choice == "3":
             add_or_update_item()
-        elif choice == "7":
-            save_inventory()
-            save_sales()
-            print("Saved. Thank you for visiting Grizzly Tap!")
-            running = False
         elif choice in ["4", "6"]:
             print("Coming soon")
         elif choice == "5":
             show_sales_report(sales)
+        elif choice == "7":
+            show_charts(sales)
+        elif choice == "8":
+            save_inventory()
+            save_sales()
+            print("Saved. Thank you for visiting Grizzly Tap!")
+            running = False
         else:
-            print("Invalid option. Please enter a number from 1 to 7.")
+            print("Invalid option. Please enter a number from 1 to 8.")
 
 main()
